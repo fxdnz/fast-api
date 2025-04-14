@@ -83,3 +83,11 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
     db.delete(db_task)
     db.commit()
     return {"message": "Task deleted successfully"}
+
+# Endpoint to fetch tasks filtered by completion status
+@app.get("/tasks/filter", response_model=List[TaskOut])
+def get_tasks_by_completion(is_completed: Optional[bool] = None, db: Session = Depends(get_db)):
+    if is_completed is not None:
+        # Filter tasks by completion status
+        return db.query(Task).filter(Task.is_completed == is_completed).all()
+    return db.query(Task).all()
