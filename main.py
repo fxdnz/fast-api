@@ -5,9 +5,20 @@ from typing import List, Optional
 
 from database import SessionLocal, engine
 from models import Task, Base
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+origins = [
+    "http://localhost:5173",  # Allow only your frontend during development
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,             # List of allowed origins
+    allow_credentials=True,
+    allow_methods=["*"],               # Allow all HTTP methods
+    allow_headers=["*"],               # Allow all headers
+)
 # Dependency to get DB session
 def get_db():
     db = SessionLocal()
