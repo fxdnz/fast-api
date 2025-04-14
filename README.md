@@ -1,23 +1,33 @@
-## Setup Instructions for Vite + React Frontend
+## Setup Instructions for FastAPI Backend
 1. Clone the repo:
    
    ```code
-   git clone https://github.com/fxdnz/fast-api-frontend.git
+   git clone https://github.com/fxdnz/fast-api.git
    ```
-3. Navigate to the project folder:
+2. Navigate to the project folder:
 
    ```code
-   cd fast-api-frontend
+   cd fast-api
    ```
+3. Create a virtual environment and activate it:
+   
+   - Windows:
+     ```code
+     python -m venv venv && venv\Scripts\activate
+     ```
+   - macOS/Linux:
+     ```code
+     python3 -m venv venv && source venv/bin/activate
+     ```
 4. Install dependencies:
 
    ```code
-   npm install
+   pip install -r requirements.txt
    ```
 5. Start the development server:
 
    ```code
-   npm run dev
+   uvicorn main:app --reload
    ```
 ## API Endpoints from FastAPI Backend
 ### GET `https://fast-api-ffw9.onrender.com/tasks` 
