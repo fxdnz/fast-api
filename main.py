@@ -9,7 +9,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 origins = [
-    "http://localhost:5173",  # Allow only your frontend during development
+    "http://localhost:5173", 
+    "https://fastapi-front.netlify.app/", # Allow only your frontend during development
 ]
 
 app.add_middleware(
