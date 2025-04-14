@@ -1,14 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 from database import SessionLocal, engine
 from models import Task, Base
-
-# Create tables in the database (only do this if you want to auto-create them)
-# Remove or comment out the line below if you're using an existing Django-created table
-# Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -24,6 +20,10 @@ def get_db():
 class TaskCreate(BaseModel):
     title: str
     is_completed: bool = False
+
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    is_completed: Optional[bool] = None
 
 class TaskOut(TaskCreate):
     id: int
@@ -44,3 +44,30 @@ def add_task(task: TaskCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_task)
     return db_task
+
+# Edit task
+@app.put("/tasks/{task_id}", response_model=TaskOut)
+def update_task(task_id: int, task: TaskUpdate, db: Session = Depends(get_db)):
+    db_task = db.query(Task).filter(Task.id == task_id).first()
+    if not db_task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    if task.title is not None:
+        db_task.title = task.title
+    if task.is_completed is not None:
+        db_task.is_completed = task.is_completed
+
+    db.commit()
+    db.refresh(db_task)
+    return db_task
+
+#  Delete task
+@app.delete("/tasks/{task_id}")
+def delete_task(task_id: int, db: Session = Depends(get_db)):
+    db_task = db.query(Task).filter(Task.id == task_id).first()
+    if not db_task:
+        raise HTTPException(status_code=404, detail="Task not found")
+
+    db.delete(db_task)
+    db.commit()
+    return {"message": "Task deleted successfully"}
