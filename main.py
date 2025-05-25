@@ -7,10 +7,14 @@ from database import SessionLocal, engine
 from models import Task, Base
 from fastapi.middleware.cors import CORSMiddleware
 
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 origins = [
+    "http://localhost:5173", 
     "https://fastapi-front.netlify.app", # Allow only your frontend during development
 ]
+
 
 app.add_middleware(
     CORSMiddleware,
