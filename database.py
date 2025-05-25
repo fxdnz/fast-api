@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 # Using environment variable for database URL
-database_url = os.environ.get("DATABASE_URL")
+database_url = "postgresql://fastapi_user:yu4JpwGYTiIDdlRLsOmEUA4E04sug3Lr@dpg-d0pd0vemcj7s73e0h0ug-a.singapore-postgres.render.com/fastapi_ambotdb"
 
 # Creating the engine to interact with PostgreSQL
 engine = create_engine(database_url, echo=True)
